@@ -1,40 +1,66 @@
 <div align="center">
 
-<!-- WAVY LIQUID ANIMATED HEADER -->
-<img src="https://capsule-render.vercel.app/render?type=waving&color=05070A&height=250&section=header&text=PLUGPACT&fontSize=90&fontColor=00F0FF&animation=twinkling&desc=ARCHITECTED%20BY%20SANDEEP%20SOM&descAlignVertical=65&descSize=20" width="100%" />
+# ⚡ PLUGPACT
+### **Next-Gen Battery Health Engine & Electric AOD HUD**
+**Architected & Developed by SANDEEP SOM**
 
 <br />
 
-<!-- Executive Wide Layout -->
-<table width="100%" border="0" cellspacing="0" cellpadding="20" style="border-collapse: collapse;">
+<img src="https://img.shields.io/badge/DEVELOPER-SANDEEP_SOM-00F0FF?style=for-the-badge&logo=android&logoColor=black" />
+<img src="https://img.shields.io/badge/ENGINE-ACTIVE-00FF9D?style=for-the-badge&logo=checkmarx&logoColor=black" />
+<img src="https://img.shields.io/badge/UI-TAMM_INSPIRED-white?style=for-the-badge&logo=appstore&logoColor=00F0FF" />
+
+<br /><br />
+
+<table width="100%">
   <tr>
     <td width="40%" align="center">
-      <!-- CIRCULAR ANIMATED BATTERY ORB -->
-      <img src="https://capsule-render.vercel.app/render?type=circle&color=05070A&height=300&text=⚡&fontSize=150&fontColor=00F0FF&animation=soft" width="300" style="border-radius: 50%; border: 4px solid #00F0FF; box-shadow: 0 0 60px rgba(0, 240, 255, 0.8);" />
-      <p style="color: #00F0FF; font-weight: bold; margin-top: 10px;">ENGINE ACTIVE</p>
+      <!-- High-Stability Animated Battery -->
+      <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1eHlzbm95eHlzbm95eHlzbm95eHlzbm95eHlzbm95eHlzbm95JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxxX1vjV4pa/giphy.gif" width="250" style="border-radius: 20px; border: 3px solid #00F0FF;" />
+      <br />
+      <code style="color: #00F0FF;">[ CORE_TELEMETRY_CONNECTED ]</code>
     </td>
     <td width="60%" align="left">
-      <h1 align="left">
-        <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=34&pause=1000&color=00F0FF&width=500&lines=%3E_PLUGPACT+CORE+ACTIVE;%3E_ELECTRIC+AOD+SPARK+HUD;%3E_BY+SANDEEP+SOM" alt="Typing Text" />
-      </h1>
-      <p style="font-size: 18px; color: #888;">
-        <strong>PLUGPACT</strong> is a next-generation battery health engine. Designed by <strong>Sandeep Som</strong>, it fuses high-fidelity AOD shaders with industrial-grade hardware telemetry to extend your device's lifespan.
+      <h2 style="color: #00F0FF;">⚡ SYSTEM OVERVIEW</h2>
+      <p>
+        <strong>PLUGPACT</strong> is an elite hardware utility designed by <strong>Sandeep Som</strong>. 
+        It protects your device's battery lifespan using <strong>3D Procedural Spark Shaders</strong> 
+        and real-time thermal monitoring.
       </p>
-      <br />
-      <div>
-        <img src="https://img.shields.io/badge/DEVELOPER-SANDEEP_SOM-00F0FF?style=for-the-badge&logo=android&logoColor=black" />
-        <img src="https://img.shields.io/badge/UI-TAMM_INSPIRED-white?style=for-the-badge&logo=checkmarx&logoColor=00F0FF" />
-      </div>
+      <ul>
+        <li><b>Micro-Spark HUD:</b> AOD-ready 3D charging arcs.</li>
+        <li><b>Night Guard:</b> 80% Healthy Charge Ceiling.</li>
+        <li><b>Master Hub:</b> TAMM-inspired diagnostic interface.</li>
+      </ul>
     </td>
   </tr>
 </table>
 
 <br />
 
-<!-- Full-Width Feature Section -->
-<hr color="#00F0FF" />
+---
 
-<div align="left" style="padding: 20px; font-family: sans-serif;">
-  <h2 style="color: #00F0FF;">⚡ CORE SYSTEM CAPABILITIES</h2>
-  
-  <table width="100%
+## 🛠️ Engineering Architecture
+
+> [!IMPORTANT]
+> **PlugPact** is built on the **Sandeep Som Design System (SSDS)**, utilizing Jetpack Compose and AGSL Runtime Shaders for maximum efficiency and aesthetic appeal.
+
+- **Graphics:** AGSL Procedural Shaders
+- **Safety:** OLED Anti-Burn-In Shifting
+- **Core:** Android Foreground Services
+- **Design:** TAMM Glassmorphism
+
+---
+
+## 🚀 How to get the APK
+
+1.  Navigate to the **Actions** tab at the top of this page.
+2.  Select the most recent **PlugPact Build Engine** run.
+3.  Scroll to the bottom and download the **PlugPact-v1-Debug** artifact.
+
+<br />
+
+**© 2026 SANDEEP SOM | ALL RIGHTS RESERVED**
+*Sophisticated Hardware Protection meets High-End Digital Aesthetics*
+
+</div>
