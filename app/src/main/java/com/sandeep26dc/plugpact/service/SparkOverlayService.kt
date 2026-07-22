@@ -10,20 +10,39 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import com.sandeep26dc.plugpact.core.BatteryReceiver
-import com.sandeep26dc.plugpact.core.BatteryState
+import com.sandeep26dc.plugpact.core.*
 import com.sandeep26dc.plugpact.ui.components.MicroSparkNode
 
 class SparkOverlayService : LifecycleService() {
 
     private lateinit var windowManager: WindowManager
     private var overlayView: ComposeView? = null
-    private val receiver = BatteryReceiver()
+    private lateinit var notificationHelper: NotificationHelper
+
+    private val receiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context, intent: Intent) {
+            val level = intent.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1)
+            val voltage = intent.getIntExtra(android.os.BatteryManager.EXTRA_VOLTAGE, 0)
+            val temp = intent.getIntExtra(android.os.BatteryManager.EXTRA_TEMPERATURE, 0) / 10
+            val status = intent.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, -1)
+            val isCharging = status == android.os.BatteryManager.BATTERY_STATUS_CHARGING
+            
+            BatteryState.update(BatteryData(level, voltage, temp, isCharging))
+            
+            // Update the status bar notification dynamically
+            val notification = notificationHelper.buildNotification(level, isCharging)
+            val manager = getSystemService(android.app.NotificationManager::class.java)
+            manager.notify(1, notification)
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
-        // Start listening to hardware battery changes
+        notificationHelper = NotificationHelper(this)
         registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        
+        // Make this a Foreground Service so it never dies
+        startForeground(1, notificationHelper.buildNotification(0, false))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -33,7 +52,6 @@ class SparkOverlayService : LifecycleService() {
 
     private fun showOverlay() {
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -43,19 +61,17 @@ class SparkOverlayService : LifecycleService() {
         ).apply {
             gravity = Gravity.TOP or Gravity.END
             x = 30
-            y = 100
+            y = 120
         }
 
         overlayView = ComposeView(this).apply {
             setViewTreeLifecycleOwner(this@SparkOverlayService)
             setViewTreeSavedStateRegistryOwner(this@SparkOverlayService)
             setContent {
-                // OBSERVE REAL DATA HERE
                 val data = BatteryState.currentData.collectAsState()
-                MicroSparkNode(percent = data.value.percent)
+                MicroSparkNode(percent = data.value.percent, isCharging = data.value.isCharging)
             }
         }
-
         windowManager.addView(overlayView, params)
     }
 
