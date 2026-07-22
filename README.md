@@ -1,21 +1,43 @@
 <div align="center">
 
-| <img src="https://raw.githubusercontent.com/sandeep26dc/PlugPact/main/docs/assets/battery_spark.png" width="350" alt="PlugPact Battery"> | <h1 align="left"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=28&pause=1000&color=00F0FF&width=400&lines=%3E_PLUGPACT+ACTIVE;%3E_ELECTRIC+SPARK+HUD;%3E_BY+SANDEEP+SOM" alt="Typing Text" /></h1><p align="left"><strong>PREMIUM BATTERY GUARDIAN</strong><br>Ultra-Modern Telemetry<br>OLED Burn-in Protection<br>Night Guard Alarm</p> |
-| :--- | :--- |
+<!-- Full Width Premium Header -->
+<img src="https://capsule-render.vercel.app/render?type=soft&color=05070A&height=200&section=header&text=PLUGPACT&fontSize=80&fontColor=00F0FF&animation=twinkling" width="100%" />
 
 <br />
 
-<!-- Status Badges with Sparky Blue Accents -->
-<img src="https://img.shields.io/badge/BUILD-SUCCESSFUL-00F0FF?style=for-the-badge&logo=githubactions&logoColor=black" />
-<img src="https://img.shields.io/badge/UI-TAMM_INSPIRED-white?style=for-the-badge&logo=android&logoColor=00F0FF" />
-<img src="https://img.shields.io/badge/ARCHITECT-SANDEEP_SOM-00F0FF?style=for-the-badge" />
+<!-- Main Content Table: Wide Layout -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="40%" align="center">
+      <!-- Animated Premium Battery Spark -->
+      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKMGpxxX1vjV4pa/giphy.gif" width="300" style="border-radius: 20px; border: 2px solid #00F0FF; box-shadow: 0 0 20px #00F0FF;" />
+    </td>
+    <td width="60%" align="left" style="padding-left: 20px;">
+      <h1 align="left">
+        <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=32&pause=1000&color=00F0FF&width=500&lines=%3E_PLUGPACT+CORE+ACTIVE;%3E_ELECTRIC+AOD+SPARK+HUD;%3E_BY+SANDEEP+SOM" alt="Typing Text" />
+      </h1>
+      <p>
+        <strong>Architected & Developed by SANDEEP SOM</strong><br />
+        <em>Lead Android Engineer & UX Designer</em>
+      </p>
+      <hr color="#00F0FF" />
+      <p>
+        A world-class battery health engine designed for the elite. 
+        PlugPact combines <strong>OLED-Safe AOD Telemetry</strong> with 
+        <strong>TAMM-Inspired Glassmorphism</strong> to protect your hardware 
+        with elegance.
+      </p>
+    </td>
+  </tr>
+</table>
 
-<br /><br />
+<br />
 
-<p width="80%">
-  <code>PLUGPACT</code> is a high-fidelity Android utility designed to mitigate battery degradation through <strong>Executive Telemetry</strong> and <strong>Smart Charge Ceilings</strong>. Featuring a signature 3D Procedural Spark HUD for Always-On Displays.
-</p>
-
+<!-- Modern Action Badges -->
+<div align="center">
+  <img src="https://img.shields.io/badge/DEVELOPER-SANDEEP_SOM-00F0FF?style=for-the-badge&logo=android&logoColor=black" />
+  <img src="https://img.shields.io/badge/STATUS-PREMIUM_ENGINE_ACTIVE-white?style=for-the-badge&logo=checkmarx&logoColor=00F0FF" />
+  <img src="https://img.shields.io/badge/BUILD-SUCCESSFUL-00FF9D?style=for-the-badge&logo=githubactions&logoColor=black" />
 </div>
 
 ---
@@ -24,26 +46,31 @@
 
 ### 💠 01. Quantum Spark AOD Node
 A subtle, edge-aligned micro-widget that replaces intrusive OEM charging animations.
-*   **Procedural AGSL Shaders:** Infinite, sparky blue plasma arcs.
-*   **OLED Pixel-Shifting:** Autonomous drift logic to prevent hardware burn-in.
+*   **Procedural AGSL Shaders:** Infinite, sparky blue plasma arcs around the real-time battery percentage.
+*   **OLED Pixel-Shifting:** Intelligent drift logic engineered by Sandeep Som to prevent display burn-in.
 
 ### 🛡️ 02. Night Guard Alarm
-A TAMM-style interactive toggle. Plays a gentle auditory chime once the device reaches the 80% health ceiling.
+The elite protection layer. Set a custom healthy ceiling (80%) and receive a premium auditory chime, preventing overnight voltage saturation.
 
 ### 📊 03. Master Diagnostic Hub
-A floating, TAMM-inspired central button that triggers a deep-system diagnostic summary.
+The heart of the app. A floating, TAMM-inspired central button that triggers a deep-system diagnostic summary of your cell's health and temperature.
 
 ---
 
-## 🛠️ Engineering Architecture
+## 🛠️ Build & Architecture
+Developed using **Kotlin 2.0**, **Jetpack Compose**, and **AGSL Runtime Shaders**. This project follows the highest standards of Clean Architecture and Performance Optimization.
 
-```text
- ┌──────────────────────────────────────────────────────────────────────────┐
- │                          P L U G P A C T   S T A C K                     │
- ├───────────────────┬──────────────────────┬───────────────────────────────┤
- │  GRAPHICS ENGINE  │  HARDWARE INTERFACE  │      UI DESIGN SYSTEM         │
- ├───────────────────┼──────────────────────┼───────────────────────────────┤
- │ • AGSL Shaders    │ • BroadcastReceiver  │ • Jetpack Compose             │
- │ • Canvas DrawScope│ • BatteryManager API │ • Glassmorphism (TAMM Style)  │
- │ • Pixel Shifter   │ • ForegroundService  │ • Dynamic StateFlow           │
- └───────────────────┴──────────────────────┴───────────────────────────────┘
+### How to install the APK:
+1. Go to the **Actions** tab at the top of this repository.
+2. Click on the latest **PlugPact Build Engine** (Green Checkmark).
+3. Scroll down to **Artifacts** and download the `PlugPact-v1-Debug` file.
+4. Extract the ZIP and install the APK on your device.
+
+---
+
+<div align="center">
+  <p><em>"PlugPact: Where sophisticated hardware protection meets high-end digital aesthetics."</em></p>
+  <strong>© 2026 SANDEEP SOM | ALL RIGHTS RESERVED</strong>
+</div>
+
+</div>
