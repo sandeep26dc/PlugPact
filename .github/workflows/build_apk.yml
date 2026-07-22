@@ -17,11 +17,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle
+      - name: Setup Stable Gradle
         uses: gradle/actions/setup-gradle@v3
+        with:
+          # FORCING GRADLE 8.5 FOR MAXIMUM STABILITY
+          gradle-version: 8.5
 
       - name: Build PlugPact APK
-        # We use 'gradle' instead of './gradlew' because the script is missing
         run: gradle assembleDebug
 
       - name: Upload APK
