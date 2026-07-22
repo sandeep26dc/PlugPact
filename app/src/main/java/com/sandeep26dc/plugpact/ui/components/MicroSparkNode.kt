@@ -1,8 +1,11 @@
 package com.sandeep26dc.plugpact.ui.components
 
 import android.graphics.RuntimeShader
+import android.os.Build
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,34 +20,42 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun MicroSparkNode(percent: Int, isCharging: Boolean) {
-    val shader = remember { RuntimeShader(SPARK_SHADER_SRC) }
-    var time by remember { mutableFloatStateOf(0f) }
-
-    // Dynamic Color Logic
-    val sparkColor = when {
-        percent >= 80 -> Color(0xFF00FF9D) // Emerald Green (Target Reached)
-        isCharging -> Color(0xFF00F0FF)    // Electric Blue (Charging)
-        else -> Color(0xFFFFFFFF)          // White (Idle)
-    }
-
+    // Pixel Shifting Logic (Anti-Burn-In)
+    var offsetX by remember { mutableFloatStateOf(0f) }
+    var offsetY by remember { mutableFloatStateOf(0f) }
+    
     LaunchedEffect(Unit) {
         while (true) {
-            time += 0.05f
-            shader.setFloatUniform("time", time)
-            delay(16)
+            delay(60000) // Move every 1 minute
+            offsetX = (-2..2).random().toFloat()
+            offsetY = (-2..2).random().toFloat()
         }
     }
 
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.size(100.dp)) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            shader.setFloatUniform("resolution", size.width, size.height)
-            drawCircle(brush = ShaderBrush(shader))
+    Box(
+        contentAlignment = Alignment.Center, 
+        modifier = Modifier.size(100.dp).offset(offsetX.dp, offsetY.dp)
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // HIGH-END SHADER (Android 13+)
+            val shader = remember { RuntimeShader(SPARK_SHADER_SRC) }
+            var time by remember { mutableFloatStateOf(0f) }
+            LaunchedEffect(Unit) {
+                while (true) {
+                    time += 0.05f
+                    shader.setFloatUniform("time", time)
+                    delay(16)
+                }
+            }
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                shader.setFloatUniform("resolution", size.width, size.height)
+                drawCircle(brush = ShaderBrush(shader))
+            }
+        } else {
+            // PREMIUM FALLBACK (For Older Androids)
+            Box(modifier = Modifier.fillMaxSize().border(2.dp, Color(0xFF00F0FF), CircleShape))
         }
-        Text(
-            text = "$percent%",
-            color = Color.White,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
-        )
+        
+        Text("$percent%", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
     }
 }
