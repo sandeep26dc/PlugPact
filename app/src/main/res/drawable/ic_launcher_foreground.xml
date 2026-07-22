@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Outer Premium Shield -->
+    <path
+        android:pathData="M50,10 L85,25 L85,50 C85,75 50,90 50,90 C50,90 15,75 15,50 L15,25 Z"
+        android:strokeWidth="2"
+        android:strokeColor="#00F0FF" />
+    <!-- Inner Electric Spark -->
+    <path
+        android:pathData="M50,30 L40,55 L55,55 L45,80"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeColor="#00F0FF" />
+</vector>
