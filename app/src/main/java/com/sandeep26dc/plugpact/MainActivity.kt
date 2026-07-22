@@ -15,8 +15,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandeep26dc.plugpact.core.BatteryState
+import com.sandeep26dc.plugpact.core.NightGuardManager
 import com.sandeep26dc.plugpact.service.SparkOverlayService
 import com.sandeep26dc.plugpact.ui.components.GlassCard
+import com.sandeep26dc.plugpact.ui.components.NightGuardToggle
 import com.sandeep26dc.plugpact.ui.theme.PlugPactTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,43 +27,33 @@ class MainActivity : ComponentActivity() {
         setContent {
             PlugPactTheme {
                 val batteryData = BatteryState.currentData.collectAsState()
+                
+                // Monitor alarm logic in real-time
+                LaunchedEffect(batteryData.value.percent) {
+                    NightGuardManager.checkAlarm(this@MainActivity, batteryData.value.percent)
+                }
 
                 Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFF05070A)) {
                     Column(modifier = Modifier.padding(24.dp)) {
-                        Text(
-                            text = "PLUGPACT",
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = Color(0xFF00F0FF)
-                        )
-                        Text(
-                            text = "Executive Battery Health",
-                            fontSize = 14.sp,
-                            color = Color.Gray
-                        )
+                        Text("PLUGPACT", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, color = Color(0xFF00F0FF))
+                        Text("Executive Battery Health", fontSize = 14.sp, color = Color.Gray)
 
                         Spacer(modifier = Modifier.height(32.dp))
 
-                        // TAMM-Style Premium Health Card
                         GlassCard {
                             Text("CORE TELEMETRY", fontSize = 12.sp, color = Color(0xFF00F0FF), fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.height(16.dp))
-                            
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                Column {
-                                    Text("BATTERY LEVEL", fontSize = 10.sp, color = Color.LightGray)
-                                    Text("${batteryData.value.percent}%", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                                }
-                                Column {
-                                    Text("TEMP", fontSize = 10.sp, color = Color.LightGray)
-                                    Text("${batteryData.value.temp}°C", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                                }
-                                Column {
-                                    Text("VOLTAGE", fontSize = 10.sp, color = Color.LightGray)
-                                    Text("${batteryData.value.voltage}mV", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                                }
+                                MetricItem("LEVEL", "${batteryData.value.percent}%")
+                                MetricItem("TEMP", "${batteryData.value.temp}°C")
+                                MetricItem("VOLT", "${batteryData.value.voltage}mV")
                             }
                         }
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        // THE NEW PREMIUM TOGGLE
+                        NightGuardToggle()
 
                         Spacer(modifier = Modifier.weight(1f))
 
@@ -76,6 +68,14 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    fun MetricItem(label: String, value: String) {
+        Column {
+            Text(label, fontSize = 10.sp, color = Color.LightGray)
+            Text(value, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
         }
     }
 
