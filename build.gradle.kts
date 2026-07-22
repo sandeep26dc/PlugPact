@@ -1,14 +1,6 @@
-// ROOT BUILD FILE - Strictly for Buildscript Classpath
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        // Core Android & Kotlin build tools
-        classpath("com.android.tools.build:gradle:8.2.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
-    }
+// ROOT BUILD FILE - Clean Modern Configuration
+plugins {
+    id("com.android.application") version "8.2.2" apply false
+    id("com.android.library") version "8.2.2" apply false
+    id("org.jetbrains.kotlin.android") version "1.9.22" apply false
 }
-
-// NO "allprojects" block here. Repositories are managed in settings.gradle.kts
