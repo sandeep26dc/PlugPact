@@ -1,24 +1,33 @@
 package com.sandeep26dc.plugpact.service
 
-import android.app.Service
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.PixelFormat
-import android.os.IBinder
 import android.view.Gravity
 import android.view.WindowManager
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.sandeep26dc.plugpact.core.BatteryReceiver
+import com.sandeep26dc.plugpact.core.BatteryState
 import com.sandeep26dc.plugpact.ui.components.MicroSparkNode
 
 class SparkOverlayService : LifecycleService() {
 
     private lateinit var windowManager: WindowManager
     private var overlayView: ComposeView? = null
+    private val receiver = BatteryReceiver()
+
+    override fun onCreate() {
+        super.onCreate()
+        // Start listening to hardware battery changes
+        registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        showOverlay()
+        if (overlayView == null) showOverlay()
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -33,7 +42,7 @@ class SparkOverlayService : LifecycleService() {
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.END
-            x = 50
+            x = 30
             y = 100
         }
 
@@ -41,7 +50,9 @@ class SparkOverlayService : LifecycleService() {
             setViewTreeLifecycleOwner(this@SparkOverlayService)
             setViewTreeSavedStateRegistryOwner(this@SparkOverlayService)
             setContent {
-                MicroSparkNode(percent = 78) // Static for now, will connect to monitor later
+                // OBSERVE REAL DATA HERE
+                val data = BatteryState.currentData.collectAsState()
+                MicroSparkNode(percent = data.value.percent)
             }
         }
 
@@ -50,6 +61,7 @@ class SparkOverlayService : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
+        unregisterReceiver(receiver)
         overlayView?.let { windowManager.removeView(it) }
     }
 }
