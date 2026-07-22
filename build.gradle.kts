@@ -1,4 +1,3 @@
-// ROOT BUILD FILE - DO NOT DELETE
 buildscript {
     repositories {
         google()
