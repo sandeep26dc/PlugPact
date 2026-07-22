@@ -6,7 +6,7 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    // This setting tells Gradle: "Only look here for libraries, not in the build files"
+    // This mode ensures repositories are defined ONLY here
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
