@@ -9,15 +9,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.savedstate.SavedStateRegistry
+import androidx.savedstate.SavedStateRegistryController
+import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.sandeep26dc.plugpact.core.*
 import com.sandeep26dc.plugpact.ui.components.MicroSparkNode
 
-class SparkOverlayService : LifecycleService() {
+class SparkOverlayService : LifecycleService(), SavedStateRegistryOwner {
 
     private lateinit var windowManager: WindowManager
     private var overlayView: ComposeView? = null
     private lateinit var notificationHelper: NotificationHelper
+    private val savedStateRegistryController = SavedStateRegistryController.create(this)
+
+    override val savedStateRegistry: SavedStateRegistry
+        get() = savedStateRegistryController.savedStateRegistry
 
     private val receiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: android.content.Context, intent: Intent) {
@@ -29,7 +36,6 @@ class SparkOverlayService : LifecycleService() {
             
             BatteryState.update(BatteryData(level, voltage, temp, isCharging))
             
-            // Update the status bar notification dynamically
             val notification = notificationHelper.buildNotification(level, isCharging)
             val manager = getSystemService(android.app.NotificationManager::class.java)
             manager.notify(1, notification)
@@ -38,10 +44,9 @@ class SparkOverlayService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
+        savedStateRegistryController.performRestore(null)
         notificationHelper = NotificationHelper(this)
         registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-        
-        // Make this a Foreground Service so it never dies
         startForeground(1, notificationHelper.buildNotification(0, false))
     }
 
