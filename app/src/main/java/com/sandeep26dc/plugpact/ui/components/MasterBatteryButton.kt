@@ -4,7 +4,6 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleFeature
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -20,12 +19,16 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun MasterBatteryButton(onClick: () -> Unit) {
-    val infiniteTransition = rememberInfiniteTransition()
+    val infiniteTransition = rememberInfiniteTransition(label = "MasterFloat")
     
-    // Floating animation logic
     val floatAnim by infiniteTransition.animateFloat(
-        initialValue = 0f, targetValue = 10f,
-        animationSpec = infiniteRepeatable(animation = tween(2000), repeatMode = RepeatMode.Reverse)
+        initialValue = 0f, 
+        targetValue = 10f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2000, easing = LinearEasing), 
+            repeatMode = RepeatMode.Reverse
+        ), 
+        label = "Float"
     )
 
     Box(
