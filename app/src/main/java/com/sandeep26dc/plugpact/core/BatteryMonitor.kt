@@ -11,9 +11,18 @@ class BatteryMonitor(private val context: Context) {
         val level = intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
         val voltage = intent?.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1) ?: -1
         val temp = intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) ?: -1
+        val status = intent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
         
-        return BatteryData(level, voltage, temp / 10)
+        val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || 
+                         status == BatteryManager.BATTERY_STATUS_FULL
+
+        return BatteryData(level, voltage, temp / 10, isCharging)
     }
 }
 
-data class BatteryData(val percent: Int, val voltage: Int, val temp: Int)
+data class BatteryData(
+    val percent: Int, 
+    val voltage: Int, 
+    val temp: Int, 
+    val isCharging: Boolean = false
+)
