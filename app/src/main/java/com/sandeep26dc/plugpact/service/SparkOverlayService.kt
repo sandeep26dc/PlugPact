@@ -9,10 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.setViewTreeLifecycleOwner
-import androidx.savedstate.SavedStateRegistry
-import androidx.savedstate.SavedStateRegistryController
-import androidx.savedstate.SavedStateRegistryOwner
-import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import androidx.savedstate.*
 import com.sandeep26dc.plugpact.core.*
 import com.sandeep26dc.plugpact.ui.components.MicroSparkNode
 
@@ -23,22 +20,14 @@ class SparkOverlayService : LifecycleService(), SavedStateRegistryOwner {
     private lateinit var notificationHelper: NotificationHelper
     private val savedStateRegistryController = SavedStateRegistryController.create(this)
 
-    override val savedStateRegistry: SavedStateRegistry
-        get() = savedStateRegistryController.savedStateRegistry
+    override val savedStateRegistry: SavedStateRegistry get() = savedStateRegistryController.savedStateRegistry
 
     private val receiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: android.content.Context, intent: Intent) {
             val level = intent.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1)
-            val voltage = intent.getIntExtra(android.os.BatteryManager.EXTRA_VOLTAGE, 0)
-            val temp = intent.getIntExtra(android.os.BatteryManager.EXTRA_TEMPERATURE, 0) / 10
             val status = intent.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, -1)
             val isCharging = status == android.os.BatteryManager.BATTERY_STATUS_CHARGING
-            
-            BatteryState.update(BatteryData(level, voltage, temp, isCharging))
-            
-            val notification = notificationHelper.buildNotification(level, isCharging)
-            val manager = getSystemService(android.app.NotificationManager::class.java)
-            manager.notify(1, notification)
+            BatteryState.update(BatteryData(level, 0, 0, isCharging))
         }
     }
 
@@ -48,11 +37,6 @@ class SparkOverlayService : LifecycleService(), SavedStateRegistryOwner {
         notificationHelper = NotificationHelper(this)
         registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         startForeground(1, notificationHelper.buildNotification(0, false))
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (overlayView == null) showOverlay()
-        return super.onStartCommand(intent, flags, startId)
     }
 
     private fun showOverlay() {
@@ -74,10 +58,15 @@ class SparkOverlayService : LifecycleService(), SavedStateRegistryOwner {
             setViewTreeSavedStateRegistryOwner(this@SparkOverlayService)
             setContent {
                 val data = BatteryState.currentData.collectAsState()
-                MicroSparkNode(percent = data.value.percent, isCharging = data.value.isCharging)
+                MicroSparkNode(percent = data.value.percent, state = data.value.hudState)
             }
         }
         windowManager.addView(overlayView, params)
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (overlayView == null) showOverlay()
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
