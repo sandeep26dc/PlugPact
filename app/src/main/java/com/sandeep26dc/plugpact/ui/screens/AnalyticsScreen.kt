@@ -21,7 +21,6 @@ fun AnalyticsScreen() {
         Spacer(modifier = Modifier.height(24.dp))
         
         GlassCard {
-            // THE SMOOTH SCI-FI GRAPH
             Canvas(modifier = Modifier.fillMaxWidth().height(200.dp)) {
                 val path = Path().apply {
                     moveTo(0f, size.height * 0.7f)
@@ -30,9 +29,8 @@ fun AnalyticsScreen() {
                 drawPath(
                     path = path,
                     color = Color(0xFF00F0FF),
-                    style = Stroke(width = 3.dp, cap = StrokeCap.Round)
+                    style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
                 )
-                // Draw Gradient Fill under the line
                 drawPath(
                     path = path.apply {
                         lineTo(size.width, size.height)
@@ -43,9 +41,5 @@ fun AnalyticsScreen() {
                 )
             }
         }
-        
-        Spacer(modifier = Modifier.height(24.dp))
-        Text("THERMAL DYNAMICS", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        // Add more infographics here...
     }
 }
