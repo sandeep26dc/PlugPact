@@ -2,27 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Hardware & System Permissions -->
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.BATTERY_STATS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    
-    <!-- Required for the Background Engine -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
-    
-    <!-- Required for the Dynamic Status Bar Icon (Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        
-        <!-- LINKING THE SIGNATURE PREMIUM ICON -->
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
-        
         android:label="PlugPact"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
@@ -39,16 +32,15 @@
             </intent-filter>
         </activity>
 
-        <!-- THE SPARK HUD ENGINE -->
         <service 
             android:name=".service.SparkOverlayService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="specialUse" />
 
-        <!-- Metadata for Foreground Service Compliance -->
-        <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" 
-                  android:value="Floating Battery HUD and Health Monitor" />
+        <property 
+            android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" 
+            android:value="Floating Battery HUD and Health Monitor" />
             
     </application>
 </manifest>
