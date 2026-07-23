@@ -6,7 +6,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,14 +25,12 @@ import kotlinx.coroutines.delay
 fun MicroSparkNode(percent: Int, state: HUDState) {
     val infiniteTransition = rememberInfiniteTransition(label = "ZenLoop")
     
-    // Zen Pulse Logic for Low/Full states
     val pulseScale by infiniteTransition.animateFloat(
         initialValue = 0.95f, targetValue = 1.05f,
         animationSpec = infiniteRepeatable(tween(2000, easing = EaseInOutSine), RepeatMode.Reverse),
         label = "Pulse"
     )
 
-    // Dynamic Color Transition
     val activeColor by animateColorAsState(
         targetValue = when (state) {
             HUDState.CHARGING_BLUE -> Color(0xFF00F0FF)
@@ -48,7 +46,6 @@ fun MicroSparkNode(percent: Int, state: HUDState) {
         modifier = Modifier.size(100.dp).scale(if (state != HUDState.CHARGING_BLUE) pulseScale else 1f)
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && state == HUDState.CHARGING_BLUE) {
-            // THE ACTIVE ELECTRIC SPARK (Only when charging)
             val shader = remember { RuntimeShader(SPARK_SHADER_SRC) }
             var time by remember { mutableFloatStateOf(0f) }
             LaunchedEffect(Unit) {
@@ -63,11 +60,10 @@ fun MicroSparkNode(percent: Int, state: HUDState) {
                 drawCircle(brush = ShaderBrush(shader))
             }
         } else {
-            // THE ZEN BREATHING CIRCLE (For Red/Green/White states)
             Canvas(modifier = Modifier.fillMaxSize()) {
                 drawCircle(
                     color = activeColor,
-                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.dp),
+                    style = Stroke(width = 2.dp.toPx()),
                     alpha = if (state == HUDState.IDLE_WHITE) 0.4f else 0.8f
                 )
             }
@@ -77,8 +73,7 @@ fun MicroSparkNode(percent: Int, state: HUDState) {
             text = "$percent%",
             color = Color.White,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 1.sp
+            fontWeight = FontWeight.Bold
         )
     }
 }
