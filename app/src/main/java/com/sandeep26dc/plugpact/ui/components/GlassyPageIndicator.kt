@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -19,7 +20,7 @@ import androidx.compose.ui.unit.dp
 fun GlassyPageIndicator(pagerState: PagerState, pageCount: Int) {
     Row(
         modifier = Modifier
-            .height(40.dp)
+            .height(30.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -27,24 +28,31 @@ fun GlassyPageIndicator(pagerState: PagerState, pageCount: Int) {
         repeat(pageCount) { index ->
             val isSelected = pagerState.currentPage == index
             
-            // Dynamic Width: Active is a pill (24dp), Inactive is a dot (8dp)
+            // Width: Minimalist 6dp dot morphing into an elegant 20dp thin line
             val width by animateDpAsState(
-                targetValue = if (isSelected) 24.dp else 8.dp,
-                animationSpec = tween(durationMillis = 300),
+                targetValue = if (isSelected) 22.dp else 6.dp,
+                animationSpec = tween(durationMillis = 500),
                 label = "Width"
             )
 
-            // Dynamic Color: Active is Neon Cyan, Inactive is Glassy Grey
+            // Muted Zen Colors (Low Alpha/Transparency for a "Ghostly" feel)
+            val zenColor = when(index) {
+                0 -> Color(0x6600F0FF) // Muted Ethereal Cyan
+                1 -> Color(0x6600FF9D) // Muted Soft Emerald
+                else -> Color(0x66B18AFF) // Muted Dust Purple
+            }
+
             val color by animateColorAsState(
-                targetValue = if (isSelected) Color(0xFF00F0FF) else Color(0x33FFFFFF),
-                animationSpec = tween(durationMillis = 300),
+                targetValue = if (isSelected) zenColor else Color(0x11FFFFFF), // Inactive is almost invisible
+                animationSpec = tween(durationMillis = 500),
                 label = "Color"
             )
 
+            // The Indicator Bead
             Box(
                 modifier = Modifier
                     .padding(horizontal = 4.dp)
-                    .size(width = width, height = 8.dp)
+                    .size(width = width, height = 3.dp) // Ultra-thin 3dp for premium feel
                     .clip(CircleShape)
                     .background(color)
             )
