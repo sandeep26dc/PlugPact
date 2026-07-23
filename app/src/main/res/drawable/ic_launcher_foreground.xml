@@ -1,18 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="100"
-    android:viewportHeight="100">
-    <!-- Outer Premium Shield -->
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Outer Premium Shield Frame -->
     <path
-        android:pathData="M50,10 L85,25 L85,50 C85,75 50,90 50,90 C50,90 15,75 15,50 L15,25 Z"
-        android:strokeWidth="2"
+        android:pathData="M54,25 L80,35 L80,55 C80,75 54,88 54,88 C54,88 28,75 28,55 L28,35 Z"
+        android:strokeWidth="2.5"
         android:strokeColor="#00F0FF" />
-    <!-- Inner Electric Spark -->
+
+    <!-- Central Electric Spark Pulse -->
     <path
-        android:pathData="M50,30 L40,55 L55,55 L45,80"
-        android:strokeWidth="4"
+        android:pathData="M54,40 L45,60 L58,60 L49,80"
+        android:strokeWidth="3.5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
+        android:strokeColor="#00F0FF" />
+        
+    <!-- Glowing Orbit Ring -->
+    <path
+        android:pathData="M54,54m-38,0a38,38 0,1 1,76 0a38,38 0,1 1,-76 0"
+        android:strokeWidth="1"
+        android:strokeAlpha="0.4"
         android:strokeColor="#00F0FF" />
 </vector>
