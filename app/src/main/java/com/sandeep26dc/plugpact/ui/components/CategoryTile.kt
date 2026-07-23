@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +26,13 @@ fun CategoryTile(title: String, desc: String, icon: String) {
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier.size(40.dp).clip(RoundedCornerShape(12.dp)).background(Color(0x1A00F0FF)), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(Color(0x1A00F0FF)), 
+            contentAlignment = Alignment.Center
+        ) {
             Text(icon, fontSize = 18.sp)
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -37,18 +45,25 @@ fun CategoryTile(title: String, desc: String, icon: String) {
 
 @Composable
 fun AboutSandeepSomDialog(onDismiss: () -> Unit) {
-    androidx.compose.material3.AlertDialog(
+    AlertDialog(
         onDismissRequest = onDismiss,
         containerColor = Color(0xFF0F141C),
-        title = { Text("SYSTEM ARCHITECT", color = Color(0xFF00F0FF), fontSize = 14.sp) },
+        title = { 
+            Text("SYSTEM ARCHITECT", color = Color(0xFF00F0FF), fontSize = 12.sp, fontWeight = FontWeight.Bold) 
+        },
         text = {
             Column {
-                Text("SANDEEP SOM", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                Text("Lead Android Performance Engineer", color = Color.Gray, fontSize = 12.sp)
-                Spacer(modifier = Modifier.height(10.dp))
-                Text("PlugPact v1.0.0 Stable Build", color = Color.DarkGray, fontSize = 10.sp)
+                Text("SANDEEP SOM", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 22.sp)
+                Text("Lead Android Performance Engineer", color = Color.Gray, fontSize = 13.sp)
+                Spacer(modifier = Modifier.height(12.dp))
+                Text("PlugPact Engine v1.0.0 Stable", color = Color.DarkGray, fontSize = 10.sp)
             }
         },
-        confirmButton = { TextButton(onClick = onDismiss) { Text("CLOSE") } }
+        confirmButton = { 
+            // FIXED: Added missing import for TextButton
+            TextButton(onClick = onDismiss) { 
+                Text("CLOSE", color = Color(0xFF00F0FF), fontWeight = FontWeight.Bold) 
+            } 
+        }
     )
 }
