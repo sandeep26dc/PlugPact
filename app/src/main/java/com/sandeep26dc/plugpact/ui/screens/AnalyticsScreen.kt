@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-// CRITICAL: Added the missing import for your custom GlassCard
+// IMPORTANT: Ensure this exact import matches your GlassCard.kt package
 import com.sandeep26dc.plugpact.ui.components.GlassCard
 
 @Composable
@@ -36,14 +36,13 @@ fun AnalyticsScreen() {
         
         Spacer(modifier = Modifier.height(24.dp))
         
-        // Wrap the chart in our Premium Glass Card
+        // Premium Infographic Card
         GlassCard {
             Canvas(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
             ) {
-                // Drawing the smooth Bezier curve
                 val path = Path().apply {
                     moveTo(0f, size.height * 0.7f)
                     cubicTo(
@@ -53,22 +52,21 @@ fun AnalyticsScreen() {
                     )
                 }
 
-                // The glowing line
+                // Cyber Line
                 drawPath(
                     path = path,
                     color = Color(0xFF00F0FF),
                     style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
                 )
 
-                // The soft gradient fill underneath the line
-                val fillPath = path.apply {
-                    lineTo(size.width, size.height)
-                    lineTo(0f, size.height)
-                    close()
-                }
+                // Bottom Gradient Glow
+                val fillPath = android.graphics.Path(path.asAndroidPath())
+                fillPath.lineTo(size.width, size.height)
+                fillPath.lineTo(0f, size.height)
+                fillPath.close()
                 
                 drawPath(
-                    path = fillPath,
+                    path = fillPath.asComposePath(),
                     brush = Brush.verticalGradient(
                         colors = listOf(Color(0x4400F0FF), Color.Transparent)
                     )
@@ -77,16 +75,7 @@ fun AnalyticsScreen() {
         }
         
         Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = "THERMAL METRICS", 
-            color = Color.White, 
-            fontSize = 16.sp, 
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = "Real-time cell temperature tracking active.", 
-            color = Color.Gray, 
-            fontSize = 12.sp
-        )
+        Text(text = "THERMAL DYNAMICS", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(text = "System monitoring active.", color = Color.Gray, fontSize = 12.sp)
     }
 }
