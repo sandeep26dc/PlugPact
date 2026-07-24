@@ -1,77 +1,77 @@
 package com.sandeep26dc.plugpact.service
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.PixelFormat
-import android.view.Gravity
-import android.view.WindowManager
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.ComposeView
-import androidx.lifecycle.LifecycleService
-import androidx.lifecycle.setViewTreeLifecycleOwner
-import androidx.savedstate.*
-import com.sandeep26dc.plugpact.core.*
-import com.sandeep26dc.plugpact.ui.components.MicroSparkNode
+import android.os.Build
+import android.os.IBinder
+import androidx.core.app.NotificationCompat
 
-class SparkOverlayService : LifecycleService(), SavedStateRegistryOwner {
+class SparkOverlayService : Service() {
 
-    private lateinit var windowManager: WindowManager
-    private var overlayView: ComposeView? = null
-    private lateinit var notificationHelper: NotificationHelper
-    private val savedStateRegistryController = SavedStateRegistryController.create(this)
-
-    override val savedStateRegistry: SavedStateRegistry get() = savedStateRegistryController.savedStateRegistry
-
-    private val receiver = object : android.content.BroadcastReceiver() {
-        override fun onReceive(context: android.content.Context, intent: Intent) {
-            val level = intent.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1)
-            val status = intent.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, -1)
-            val isCharging = status == android.os.BatteryManager.BATTERY_STATUS_CHARGING
-            BatteryState.update(BatteryData(level, 0, 0, isCharging))
+    private val powerReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when (intent?.action) {
+                Intent.ACTION_POWER_CONNECTED -> {
+                    updateNotification("PlugPact Guardian Active", "Charger Plugged In - Micro-Spark HUD Running")
+                }
+                Intent.ACTION_POWER_DISCONNECTED -> {
+                    updateNotification("PlugPact Guardian Active", "Monitoring Battery Health...")
+                }
+            }
         }
     }
 
     override fun onCreate() {
         super.onCreate()
-        savedStateRegistryController.performRestore(null)
-        notificationHelper = NotificationHelper(this)
-        registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-        startForeground(1, notificationHelper.buildNotification(0, false))
-    }
+        createNotificationChannel()
+        startForeground(201, buildNotification("PlugPact Guardian Active", "Monitoring power connection..."))
 
-    private fun showOverlay() {
-        windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        val params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED,
-            PixelFormat.TRANSLUCENT
-        ).apply {
-            gravity = Gravity.TOP or Gravity.END
-            x = 30
-            y = 120
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_POWER_CONNECTED)
+            addAction(Intent.ACTION_POWER_DISCONNECTED)
         }
-
-        overlayView = ComposeView(this).apply {
-            setViewTreeLifecycleOwner(this@SparkOverlayService)
-            setViewTreeSavedStateRegistryOwner(this@SparkOverlayService)
-            setContent {
-                val data = BatteryState.currentData.collectAsState()
-                MicroSparkNode(percent = data.value.percent, state = data.value.hudState)
-            }
-        }
-        windowManager.addView(overlayView, params)
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (overlayView == null) showOverlay()
-        return super.onStartCommand(intent, flags, startId)
+        registerReceiver(powerReceiver, filter)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(receiver)
-        overlayView?.let { windowManager.removeView(it) }
+        try {
+            unregisterReceiver(powerReceiver)
+        } catch (_: Exception) {}
+    }
+
+    override fun onBind(intent: Intent?): IBinder? = null
+
+    private fun buildNotification(title: String, text: String): Notification {
+        return NotificationCompat.Builder(this, "plugpact_overlay_channel")
+            .setContentTitle(title)
+            .setContentText(text)
+            .setSmallIcon(android.R.drawable.ic_lock_idle_charging)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setOngoing(true)
+            .build()
+    }
+
+    private fun updateNotification(title: String, text: String) {
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        manager.notify(201, buildNotification(title, text))
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "plugpact_overlay_channel",
+                "PlugPact HUD & Battery Guardian",
+                NotificationManager.IMPORTANCE_LOW
+            )
+            val manager = getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(channel)
+        }
     }
 }
